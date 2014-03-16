@@ -1,0 +1,34 @@
+﻿@model SkopMe.Web.Models.ProfileModel
+
+@{
+    ViewBag.Title = "EditProfile";
+}
+
+<h2>EditProfile</h2>
+<form class="form-editprofile" method="post" action="EditProfile">
+<fieldset>
+        <legend>User Profile Details</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName)
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName)
+                @Html.ValidationMessageFor(m => m.LastName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Gender)
+                @Html.TextBoxFor(m => m.Gender)
+                @Html.ValidationMessageFor(m => m.Gender)
+            </li>
+        </ol>
+        <input type="submit" value="Update Profile" />
+    </fieldset>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

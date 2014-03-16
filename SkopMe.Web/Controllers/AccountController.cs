@@ -7,14 +7,13 @@ using System.Web.Mvc;
 using System.Web.Security;
 using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
-using WebMatrix.WebData;
-using SkopMe.Web.Filters;
 using SkopMe.Web.Models;
+using Thinktecture.IdentityModel.Authorization.Mvc;
+using System.Web.Profile;
 
 namespace SkopMe.Web.Controllers
 {
     [Authorize]
-    [InitializeSimpleMembership]
     public class AccountController : Controller
     {
         //
@@ -35,9 +34,21 @@ namespace SkopMe.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
+            if (ModelState.IsValid)
             {
-                return RedirectToLocal(returnUrl);
+                // authenticate user
+                var success = Membership.ValidateUser(model.UserName, model.Password);
+
+                if (success)
+                {
+                    //Initialise the profile
+                    this.Profile.Initialize(model.UserName, success);
+
+                    // set authentication cookie
+                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+                    return RedirectToLocal(returnUrl);
+                }
             }
 
             // If we got this far, something failed, redisplay form
@@ -52,7 +63,7 @@ namespace SkopMe.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            WebSecurity.Logout();
+            //WebSecurity.Logout();
 
             return RedirectToAction("Index", "Home");
         }
@@ -79,8 +90,8 @@ namespace SkopMe.Web.Controllers
                 // Attempt to register the user
                 try
                 {
-                    WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-                    WebSecurity.Login(model.UserName, model.Password);
+                    //WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    //WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -109,13 +120,13 @@ namespace SkopMe.Web.Controllers
                 // Use a transaction to prevent the user from deleting their last login credential
                 using (var scope = new TransactionScope(TransactionScopeOption.Required, new TransactionOptions { IsolationLevel = IsolationLevel.Serializable }))
                 {
-                    bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-                    if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
-                    {
-                        OAuthWebSecurity.DeleteAccount(provider, providerUserId);
-                        scope.Complete();
-                        message = ManageMessageId.RemoveLoginSuccess;
-                    }
+                    //bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+                    //if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1)
+                    //{
+                    //    OAuthWebSecurity.DeleteAccount(provider, providerUserId);
+                    //    scope.Complete();
+                    //    message = ManageMessageId.RemoveLoginSuccess;
+                    //}
                 }
             }
 
@@ -132,7 +143,7 @@ namespace SkopMe.Web.Controllers
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
                 : "";
-            ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
             return View();
         }
@@ -144,57 +155,57 @@ namespace SkopMe.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model)
         {
-            bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
-            ViewBag.HasLocalPassword = hasLocalAccount;
-            ViewBag.ReturnUrl = Url.Action("Manage");
-            if (hasLocalAccount)
-            {
-                if (ModelState.IsValid)
-                {
-                    // ChangePassword will throw an exception rather than return false in certain failure scenarios.
-                    bool changePasswordSucceeded;
-                    try
-                    {
-                        changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-                    }
-                    catch (Exception)
-                    {
-                        changePasswordSucceeded = false;
-                    }
+            //bool hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //ViewBag.HasLocalPassword = hasLocalAccount;
+            //ViewBag.ReturnUrl = Url.Action("Manage");
+            //if (hasLocalAccount)
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+            //        // ChangePassword will throw an exception rather than return false in certain failure scenarios.
+            //        bool changePasswordSucceeded;
+            //        try
+            //        {
+            //            changePasswordSucceeded = WebSecurity.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+            //        }
+            //        catch (Exception)
+            //        {
+            //            changePasswordSucceeded = false;
+            //        }
 
-                    if (changePasswordSucceeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                    }
-                }
-            }
-            else
-            {
-                // User does not have a local password so remove any validation errors caused by a missing
-                // OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
+            //        if (changePasswordSucceeded)
+            //        {
+            //            return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+            //        }
+            //        else
+            //        {
+            //            ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    // User does not have a local password so remove any validation errors caused by a missing
+            //    // OldPassword field
+            //    ModelState state = ModelState["OldPassword"];
+            //    if (state != null)
+            //    {
+            //        state.Errors.Clear();
+            //    }
 
-                if (ModelState.IsValid)
-                {
-                    try
-                    {
-                        WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    catch (Exception)
-                    {
-                        ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
-                    }
-                }
-            }
+            //    if (ModelState.IsValid)
+            //    {
+            //        try
+            //        {
+            //            WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
+            //            return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+            //        }
+            //        catch (Exception)
+            //        {
+            //            ModelState.AddModelError("", String.Format("Unable to create local account. An account with the name \"{0}\" may already exist.", User.Identity.Name));
+            //        }
+            //    }
+            //}
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -324,9 +335,52 @@ namespace SkopMe.Web.Controllers
                 });
             }
 
-            ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+            //ViewBag.ShowRemoveButton = externalLogins.Count > 1 || OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
+
+        #region Custom SkopMe
+
+        [ClaimsAuthorize("Edit", "Profile")]
+        public ActionResult EditProfile()
+        {
+            ProfileBase _userProfile = ProfileBase.Create(HttpContext.User.Identity.Name);
+            ProfileModel _profile = new ProfileModel();
+            if (_userProfile.LastUpdatedDate > DateTime.MinValue)
+            {
+                _profile.FirstName = Convert.ToString(_userProfile.GetPropertyValue("FirstName"));
+                _profile.LastName = Convert.ToString(_userProfile.GetPropertyValue("LastName"));
+                _profile.Gender = Convert.ToString(_userProfile.GetPropertyValue("Gender"));
+            }
+
+            return View(_profile);
+        }
+
+        [HttpPost]
+        [ClaimsAuthorize("Edit", "Profile")]
+        public ActionResult EditProfile(ProfileModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Attempt to register the user profile
+                System.Web.Profile.ProfileBase profile = System.Web.Profile.ProfileBase.Create(User.Identity.Name, true);
+
+                if (profile != null)
+                {
+                    profile.SetPropertyValue("Gender", model.Gender);
+                    profile.SetPropertyValue("FirstName", model.FirstName);
+                    profile.SetPropertyValue("LastName", model.LastName);
+                    profile.Save();
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Error writing to Profile");
+                }
+            }
+            return View(model);
+        }
+
+        #endregion
 
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)

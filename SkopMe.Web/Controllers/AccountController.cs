@@ -63,7 +63,7 @@ namespace SkopMe.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            //WebSecurity.Logout();
+            FormsAuthentication.SignOut();
 
             return RedirectToAction("Index", "Home");
         }

@@ -1,0 +1,35 @@
+﻿@model SkopMe.Web.Models.UserCategoryModel
+
+@{
+    ViewBag.Title = "Create UserCategory";
+}
+
+<h2>Create UserCategory</h2>
+
+<form class="form-createusercategory" method="post" action="Create">
+<fieldset>
+        <legend>User Profile Details</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.pId)
+                @Html.TextBoxFor(m => m.pId)
+                @Html.ValidationMessageFor(m => m.pId)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username)
+                @Html.ValidationMessageFor(m => m.Username)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Categories)
+                @Html.TextBoxFor(m => m.Categories)
+                @Html.ValidationMessageFor(m => m.Categories)
+            </li>
+        </ol>
+        <input type="submit" value="Create" />
+    </fieldset>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

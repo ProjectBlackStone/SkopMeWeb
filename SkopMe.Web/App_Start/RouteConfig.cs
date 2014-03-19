@@ -18,6 +18,13 @@ namespace SkopMe.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "UserCategory",
+                url: "{controller}/{action}/{id}",
+                defaults: new { controller = "UserCategory", action = "Create", id = UrlParameter.Optional }
+            );
+
         }
     }
 }

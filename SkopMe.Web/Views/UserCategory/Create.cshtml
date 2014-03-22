@@ -1,4 +1,4 @@
-﻿@model SkopMe.Web.Models.UserCategoryModel
+﻿@model IEnumerable<SkopMe.Core.Models.UserCategoryModel>
 
 @{
     ViewBag.Title = "Create UserCategory";
@@ -11,19 +11,19 @@
         <legend>User Profile Details</legend>
         <ol>
             <li>
-                @Html.LabelFor(m => m.pId)
-                @Html.TextBoxFor(m => m.pId)
-                @Html.ValidationMessageFor(m => m.pId)
+                @Html.LabelFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).pId)
+                @Html.TextBoxFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).pId)
+                @Html.ValidationMessageFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).pId)
             </li>
             <li>
-                @Html.LabelFor(m => m.Username)
-                @Html.TextBoxFor(m => m.Username)
-                @Html.ValidationMessageFor(m => m.Username)
+                @Html.LabelFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Username)
+                @Html.TextBoxFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Username)
+                @Html.ValidationMessageFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Username)
             </li>
             <li>
-                @Html.LabelFor(m => m.Categories)
-                @Html.TextBoxFor(m => m.Categories)
-                @Html.ValidationMessageFor(m => m.Categories)
+                @Html.LabelFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Categories)
+                @Html.TextBoxFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Categories)
+                @Html.ValidationMessageFor(m => m.ElementAt<SkopMe.Core.Models.UserCategoryModel>(0).Categories)
             </li>
         </ol>
         <input type="submit" value="Create" />

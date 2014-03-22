@@ -5,7 +5,7 @@ assembly="SkopMe.Web"
 namespace="SkopMe.Web"
 auto-import="true">
   
-<class name="SkopMe.Web.Models.UserCategoryModel,SkopMe.Web" > 
+<class name="SkopMe.Core.Models.UserCategoryModel,SkopMe.Core" > 
   <id name="pId" access="property" column="pId" type="Int32"></id> 
   <property name="Username" access="property" 
    column="Username" type="String"></property> 

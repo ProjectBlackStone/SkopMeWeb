@@ -1,9 +1,5 @@
-﻿using SkopMe.Web.Models;
-using SkopMe.Web.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using SkopMe.Core.Models;
+using SkopMe.Repositories;
 using System.Web.Mvc;
 
 namespace SkopMe.Web.Controllers
@@ -20,41 +16,31 @@ namespace SkopMe.Web.Controllers
         {
             var userCategories = _userCategory.GetUserCategories();
             return View(userCategories); 
-
         }
 
         public ActionResult Create()
         {
-            var userCategory = new UserCategoryModel();
-            return View(userCategory);
+            var userCategories = _userCategory.GetUserCategories();
+            return View(userCategories);
         }
-
-
-        // 
+        
         // POST: /UserCategory/Create 
         [HttpPost]
         public ActionResult Create(UserCategoryModel userCategory)
-        {
-            try
-            {
-                _userCategory.CreateUserCategory(userCategory);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+        {            
+            _userCategory.CreateUserCategory(userCategory);
+            return RedirectToAction("Index", "Home");             
         }
 
-        // 
+        
         // GET: /UserCategory/Edit/5 
         public ActionResult Edit(int id)
         {
             var Emp = _userCategory.GetUserCategoryById(id);
             return View(Emp);
         }
-        // 
-        // POST: /EmployeeInfo/Edit/5 
+        
+        // POST: /UserCategory/Edit/5 
         [HttpPost]
         public ActionResult Edit(int id, UserCategoryModel userCategory)
         {
@@ -68,15 +54,15 @@ namespace SkopMe.Web.Controllers
                 return View();
             }
         }
-        // 
-        // GET: /EmployeeInfo/Delete/5 
+         
+        // GET: /UserCategory/Delete/5 
         public ActionResult Delete(int id)
         {
             var userCategory = _userCategory.GetUserCategoryById(id);
             return View(userCategory);
         }
-        // 
-        // POST: /EmployeeInfo/Delete/5 
+         
+        // POST: /UserCategory/Delete/5 
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {

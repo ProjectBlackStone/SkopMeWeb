@@ -27,6 +27,9 @@ namespace SkopMe.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+
+            //Dependency injection initialize
+            Bootstrapper.Initialise();
             
             //need to review
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.Name;

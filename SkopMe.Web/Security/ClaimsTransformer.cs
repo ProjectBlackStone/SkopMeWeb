@@ -20,7 +20,7 @@ namespace SkopMe.Web.Security
         private ClaimsPrincipal CreatePrincipal(ClaimsPrincipal principal)
         {
             var userName = principal.Identity.Name;
-
+            
             //Get roles
             string[] roles = Roles.GetRolesForUser(userName);
 

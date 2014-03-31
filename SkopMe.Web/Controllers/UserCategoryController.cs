@@ -1,4 +1,6 @@
-﻿using SkopMe.Core.Models;
+﻿using SkopMe.Core.Interface.Repository;
+using SkopMe.Core.Interface.Services;
+using SkopMe.Core.Models;
 using SkopMe.Repositories;
 using System.Web.Mvc;
 
@@ -6,21 +8,22 @@ namespace SkopMe.Web.Controllers
 {
     public class UserCategoryController : Controller
     {
-        UserCategoryRepository _userCategory;
-        public UserCategoryController() 
+        IUserCategoryService _userCategoryService;
+
+        public UserCategoryController(IUserCategoryService userCategoryService) 
         {
-            _userCategory = new UserCategoryRepository(); 
+            _userCategoryService = userCategoryService; 
         } 
 
         public ActionResult Index()
         {
-            var userCategories = _userCategory.GetUserCategories();
+            var userCategories = _userCategoryService.GetUserCategories();
             return View(userCategories); 
         }
 
         public ActionResult Create()
         {
-            var userCategories = _userCategory.GetUserCategories();
+            var userCategories = _userCategoryService.GetUserCategories();
             return View(userCategories);
         }
         
@@ -28,7 +31,7 @@ namespace SkopMe.Web.Controllers
         [HttpPost]
         public ActionResult Create(UserCategoryModel userCategory)
         {            
-            _userCategory.CreateUserCategory(userCategory);
+            _userCategoryService.CreateUserCategory(userCategory);
             return RedirectToAction("Index", "Home");             
         }
 
@@ -36,7 +39,7 @@ namespace SkopMe.Web.Controllers
         // GET: /UserCategory/Edit/5 
         public ActionResult Edit(int id)
         {
-            var Emp = _userCategory.GetUserCategoryById(id);
+            var Emp = _userCategoryService.GetUserCategoryById(id);
             return View(Emp);
         }
         
@@ -46,7 +49,7 @@ namespace SkopMe.Web.Controllers
         {
             try
             {
-                _userCategory.UpdateUserCategory(userCategory);
+                _userCategoryService.UpdateUserCategory(userCategory);
                 return RedirectToAction("Index");
             }
             catch
@@ -58,7 +61,7 @@ namespace SkopMe.Web.Controllers
         // GET: /UserCategory/Delete/5 
         public ActionResult Delete(int id)
         {
-            var userCategory = _userCategory.GetUserCategoryById(id);
+            var userCategory = _userCategoryService.GetUserCategoryById(id);
             return View(userCategory);
         }
          
@@ -68,8 +71,8 @@ namespace SkopMe.Web.Controllers
         {
             try
             {
-                var userCategory = _userCategory.GetUserCategoryById(id);
-                _userCategory.DeleteUserCategory(userCategory);
+                var userCategory = _userCategoryService.GetUserCategoryById(id);
+                _userCategoryService.DeleteUserCategory(userCategory);
                 return RedirectToAction("Index");
             }
             catch

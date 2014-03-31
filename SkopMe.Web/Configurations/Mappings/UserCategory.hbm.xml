@@ -6,7 +6,7 @@ namespace="SkopMe.Web"
 auto-import="true">
   
 <class name="SkopMe.Core.Models.UserCategoryModel,SkopMe.Core" > 
-  <id name="pId" access="property" column="pId" type="Int32"></id> 
+  <id name="pId" access="property" column="pId" type="int"></id> 
   <property name="Username" access="property" 
    column="Username" type="String"></property> 
   <property name="Categories" access="property" 

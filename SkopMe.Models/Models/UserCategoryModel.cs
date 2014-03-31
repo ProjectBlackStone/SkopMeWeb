@@ -6,7 +6,7 @@ namespace SkopMe.Core.Models
     public class UserCategoryModel
     {
         [Display(Name = "pId")]
-        public virtual Int32 pId { get; set; }
+        public virtual int pId { get; set; }
 
         [Display(Name = "Username")]
         public virtual string Username { get; set; }

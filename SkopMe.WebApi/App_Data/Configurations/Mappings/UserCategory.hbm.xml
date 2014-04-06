@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping
+xmlns="urn:nhibernate-mapping-2.2"
+assembly="SkopMe.Web"
+namespace="SkopMe.Web"
+auto-import="true">
+  
+<class name="SkopMe.Core.Models.UserCategoryModel,SkopMe.Core" > 
+  <id name="pId" access="property" column="pId" type="int"></id> 
+  <property name="Username" access="property" 
+   column="Username" type="String"></property> 
+  <property name="Categories" access="property" 
+   column="Categories" type="String"></property> 
+  </class> 
+
+</hibernate-mapping>

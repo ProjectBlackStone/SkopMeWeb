@@ -5,9 +5,12 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Thinktecture.IdentityModel.Authorization.Mvc;
 
 namespace SkopMe.WebApi.Controllers
 {
+    [ClaimsAuthorize]
+    [TokenValidationFilter]
     public class ValuesController : ApiController
     {
         // GET api/values

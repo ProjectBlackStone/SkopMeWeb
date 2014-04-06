@@ -25,6 +25,8 @@ namespace SkopMe.WebApi
        
 #endif
 
+            //add for Validation of token
+            //config.Filters.Add(new TokenValidationFilter());
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using SkopMe.Web.Security;
+﻿using SkopMe.Core.Security;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Web;
@@ -13,8 +11,6 @@ using System.Web.Routing;
 
 namespace SkopMe.Web
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
 
     public class MvcApplication : System.Web.HttpApplication
     {

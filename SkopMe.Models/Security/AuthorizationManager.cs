@@ -20,15 +20,15 @@ namespace SkopMe.Core.Security
             switch (resource)
             {
                 case "Profile":
-                    {
-                        if (PrincipalCanPerformActionOnResource(context))
-                            return true;
-                        break;
-                    }
+                {
+                    if (PrincipalCanPerformActionOnResource(context))
+                        return true;
+                    break;
+                }
                 default:
-                    {
-                        throw new NotSupportedException(string.Format("{0} is not a valid resource", resource));
-                    }
+                {
+                    throw new NotSupportedException(string.Format("{0} is not a valid resource", resource));
+                }
             }
 
             return false;
@@ -46,20 +46,19 @@ namespace SkopMe.Core.Security
             switch (action)
             {
                 case "Edit":
+                {
+                    if (context.Principal.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+                                                    "admin"))
                     {
-                        if (context.Principal.HasClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-                                                       "admin"))
-                        {
-                            return true;
-                        }
-                        break;
+                        return true;
                     }
+                    break;
+                }
                 default:
-                    {
-                        throw new NotSupportedException(string.Format("{0} is not a valid action", action));
-                    }
+                {
+                    throw new NotSupportedException(string.Format("{0} is not a valid action", action));
+                }
             }
-
             return false;
         }
     }

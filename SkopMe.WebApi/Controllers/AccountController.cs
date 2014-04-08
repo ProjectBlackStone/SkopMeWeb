@@ -17,51 +17,111 @@ namespace SkopMe.WebApi.Controllers
         // GET api/account
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1xx", "value2xxx" };
+            return null;
         }
 
         // GET api/account/5
         public string Get(int id)
         {
-            return "value";
+            return "";
         }
 
         // POST api/account
         [AllowAnonymous]
         public HttpResponseMessage Post([FromBody] RegisterModel model)
         {
-            try
-            {
-                //if (ModelState.IsValid)
-                //{
-                RegisterAccountService service = new RegisterAccountService(new RegisterAccountRepository());
-                bool isSuccess = service.RegisterUser(model);
+            //response object
+            HttpResponseMessage response = null;
 
-                if (isSuccess)
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    //initialize the response
-                    HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, "User created");
-                    //add the token
-                    response.Headers.Add("Authorization-Token", CryptographyHelper.Encrypt(string.Format("{0}*{1}*{2}", model.UserName, "10-20", DateTime.Now.AddDays(30).ToString())));
+                    // Attempt to register the user
+                    //MembershipCreateStatus createStatus;
+                    //Membership.CreateUser(model.UserName, model.Password, model.Email, "question", "answer", true, null, out createStatus);
+                    //TODO to change to IOC
+                    RegisterAccountService service = new RegisterAccountService(new RegisterAccountRepository());
+                    //Check if we can register the user
+                    bool isSuccess = service.RegisterUser(model);
 
-                    return response;
+                    if (isSuccess)
+                    {
+                        //initialize the response
+                        response = Request.CreateResponse(HttpStatusCode.Created, "User created");
+                        //add the token
+                        response.Headers.Add("Authorization-Token", CryptographyHelper.Encrypt(string.Format("{0}*{1}*{2}", model.UserName, "10-20", DateTime.Now.AddDays(30).ToString())));
+                    }
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Unable to create user");
+
                 }
-                else
-                    return Request.CreateResponse(HttpStatusCode.InternalServerError, "Unable to create user");
-                //}
-                //else
-                //{
-                //    return Request.CreateResponse(HttpStatusCode.InternalServerError, "Invalid Model");
-                //}
+                catch (MembershipCreateUserException exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, "User name already exists. Choose another one." + exception.Message);
+                }
+                catch (Exception exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.Message);
+                }
             }
-            catch (MembershipCreateUserException exception)
+            else
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "User name already exists. Choose another one." + exception.Message);
+                //Write all the errors in the response
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, allErrors);
             }
-            catch (Exception exception)
+
+            return response; 
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public HttpResponseMessage Register([FromBody] RegisterModel model)
+        {
+            //response object
+            HttpResponseMessage response = null;
+
+            if (ModelState.IsValid)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.Message);
+                try
+                {
+                    // Attempt to register the user
+                    //MembershipCreateStatus createStatus;
+                    //Membership.CreateUser(model.UserName, model.Password, model.Email, "question", "answer", true, null, out createStatus);
+                    //TODO to change to IOC
+                    RegisterAccountService service = new RegisterAccountService(new RegisterAccountRepository());
+                    //Check if we can register the user
+                    bool isSuccess = service.RegisterUser(model);
+
+                    if (isSuccess)
+                    {
+                        //initialize the response
+                        response = Request.CreateResponse(HttpStatusCode.Created, "User created");
+                        //add the token
+                        response.Headers.Add("Authorization-Token", CryptographyHelper.Encrypt(string.Format("{0}*{1}*{2}", model.UserName, "10-20", DateTime.Now.AddDays(30).ToString())));
+                    }
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Unable to create user");
+
+                }
+                catch (MembershipCreateUserException exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, "User name already exists. Choose another one." + exception.Message);
+                }
+                catch (Exception exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.Message + exception.StackTrace);
+                }
             }
+            else
+            {
+                //Write all the errors in the response
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, allErrors);
+            }
+
+            return response;
         }
 
         // PUT api/account/5

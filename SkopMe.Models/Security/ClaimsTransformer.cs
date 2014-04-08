@@ -7,6 +7,12 @@ namespace SkopMe.Core.Security
 {
     public class ClaimsTransformer : ClaimsAuthenticationManager
     {
+        /// <summary>
+        /// Authentication method
+        /// </summary>
+        /// <param name="resourceName"></param>
+        /// <param name="incomingPrincipal"></param>
+        /// <returns></returns>
         public override ClaimsPrincipal Authenticate(string resourceName, ClaimsPrincipal incomingPrincipal)
         {
             if (!incomingPrincipal.Identity.IsAuthenticated)
@@ -17,6 +23,11 @@ namespace SkopMe.Core.Security
             return CreatePrincipal(incomingPrincipal);
         }
 
+        /// <summary>
+        /// Create Claims 
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <returns></returns>
         private ClaimsPrincipal CreatePrincipal(ClaimsPrincipal principal)
         {
             var userName = principal.Identity.Name;

@@ -1,0 +1,15 @@
+﻿@model IEnumerable<SkopMe.Core.Models.UserCategoryModel>
+
+<div>
+    <ul>
+        @{
+            foreach(var item in Model.OrderBy(o => o.Categories))
+            {
+                <li>    
+                    @item.pId
+                    <b>@item.Username</b>
+                </li>
+            }
+        }
+    </ul>
+</div>

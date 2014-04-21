@@ -28,6 +28,51 @@ namespace SkopMe.WebApi.Controllers
 
         // POST api/account
         [AllowAnonymous]
+        public HttpResponseMessage Login([FromBody] LoginModel model)
+        {
+            //response object
+            HttpResponseMessage response = null;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    bool isSuccess = Membership.ValidateUser(model.UserName, model.Password);
+                   
+                    if (isSuccess)
+                    {
+                        //initialize the response
+                        response = Request.CreateResponse(HttpStatusCode.Accepted, "Successful Login");
+                        //add the token
+                        response.Headers.Add("Authorization-Token", CryptographyHelper.Encrypt(string.Format("{0}*{1}*{2}", model.UserName, "10-20", DateTime.Now.AddDays(30).ToString())));
+                    }
+                    else
+                        response = Request.CreateResponse(HttpStatusCode.InternalServerError, "Invalid User Name or Password. Please check the user name and password and try again");
+
+                }
+                catch (MembershipPasswordException exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, "Password Exception." + exception.Message);
+                }
+                catch (Exception exception)
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, exception.Message);
+                }
+            }
+            else
+            {
+                //Write all the errors in the response
+                var allErrors = ModelState.Values.SelectMany(v => v.Errors).Select(v => v.ErrorMessage);
+                response = Request.CreateResponse(HttpStatusCode.InternalServerError, allErrors);
+            }
+
+            return response;
+        }
+
+
+        // POST api/account
+        [AllowAnonymous]
         public HttpResponseMessage Post([FromBody] RegisterModel model)
         {
             //response object

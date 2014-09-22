@@ -43,7 +43,9 @@ namespace SkopMe.Web
             //bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
             //            "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+
+            //removed ~/Content/site.css
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/app.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
@@ -65,8 +67,9 @@ namespace SkopMe.Web
                 "~/Content/themes/unifybootstrap/plugins/line-icons/line-icons.css",
                 "~/Content/themes/unifybootstrap/plugins/font-awesome/css/font-awesome.css",
                 "~/Content/themes/unifybootstrap/plugins/flexslider/flexslider.css",
-                "~/Content/themes/unifybootstrap/plugins/parallax-slider/parallax-slider.css",
-                "~/Content/themes/unifybootstrap/plugins/default.css"
+                "~/Content/themes/unifybootstrap/plugins/parallax-slider/css/parallax-slider.css",
+                "~/Content/themes/unifybootstrap/plugins/default.css",
+                "~/Content/app.css"
                 ));
         }
     }

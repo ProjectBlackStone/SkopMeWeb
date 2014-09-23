@@ -4,11 +4,64 @@
     ViewBag.Title = "Log in";
 }
 
-<hgroup class="title">
+@*<hgroup class="title">
     <h1>@ViewBag.Title.</h1>
-</hgroup>
+</hgroup>*@
 
-<section id="loginForm">
+ <!--=== Content Part ===-->
+<div class="wrapper">
+        <div class="container content">		
+    	<div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 reg-page">
+    
+                    <div class="reg-header">            
+                        <h2>Login to your account</h2>
+                    </div>
+                    @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) 
+                    {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+
+                    <div class="input-group margin-bottom-20">
+                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                        @Html.TextBoxFor(m => m.UserName , new { @class="form-control", placeholder="Username"})
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>                    
+                    <div class="input-group margin-bottom-20">
+                        <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                         @Html.PasswordFor(m => m.Password, new { @class="form-control", placeholder="Password",type="password"})
+                         @Html.ValidationMessageFor(m => m.Password)
+                    </div>                    
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="checkbox"><input type="checkbox"> Stay signed in</label>                        
+                        </div>
+                        <div class="col-md-6">
+                            @*<input class="btn-u pull-right" type="submit" value="Log in"/> *@        
+                            <input type="submit" value="Log in" />              
+                        </div>
+                    </div>
+                    }
+                    <hr>
+
+                    <h4>Forget your Password ?</h4>
+                    <p><a class="color-green" href="#">click here</a> to reset your password.</p>
+
+                    <hr>
+
+                    <h4>New User? </h4>
+                    <p>
+                        @Html.ActionLink("click here", "Register") if you don't have an account.
+                    </p>
+        
+            </div>
+        </div><!--/row-->
+    </div><!--/container-->		
+</div>
+ <!--=== End Content Part ===-->
+
+@*<section id="loginForm">
 <h2>Use a local account to log in.</h2>
 @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
     @Html.AntiForgeryToken()
@@ -43,8 +96,10 @@
 <section class="social" id="socialLoginForm">
     <h2>Use another service to log in.</h2>
     @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
-</section>
+</section>*@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+     @Styles.Render("~/Content/css/registration")
 }

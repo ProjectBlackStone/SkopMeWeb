@@ -3,15 +3,72 @@
     ViewBag.Title = "Register";
 }
 
-<hgroup class="title">
+@*<hgroup class="title">
     <h1>@ViewBag.Title.</h1>
     <h2>Create a new account.</h2>
-</hgroup>
+</hgroup>*@
+
+
+
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    
 
+    
+    <!--=== Content Part ===-->
+    <div class="wrapper">
+    <div class="container content">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 reg-page">
+                @Html.ValidationSummary()
+                    <div class="reg-header">
+                        <h2>Register a new account</h2>
+                        <p>Already Signed Up? Click  @Html.ActionLink("Sign In", "Login") to login your account.</p>                    
+                    </div>
+
+                    <label>User Name</label>
+                     @Html.TextBoxFor(m => m.UserName, new { @class="form-control margin-bottom-20", placeholder="Username"})
+
+                    @*<label>Last Name</label>
+                    <input type="text" class="form-control margin-bottom-20">
+                   
+                    <label>Email Address <span class="color-red">*</span></label>
+                    <input type="text" class="form-control margin-bottom-20">*@
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Password <span class="color-red">*</span></label>
+                            @Html.PasswordFor(m => m.Password, new { @class="form-control margin-bottom-20", placeholder="Password",type="password"})
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Confirm Password <span class="color-red">*</span></label>
+                             @Html.PasswordFor(m => m.ConfirmPassword, new { @class="form-control margin-bottom-20", placeholder="Password",type="password"})
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <label class="checkbox">
+                                <input type="checkbox"> 
+                                I read <a href="page_terms.html" class="color-green">Terms and Conditions</a>
+                            </label>                        
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <button class="btn-u" type="submit">Register</button>                        
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div><!--/container-->		
+    
+    </div>    
+        <!--=== End Content Part ===-->
+        
+        @*
+    
     <fieldset>
         <legend>Registration Form</legend>
         <ol>
@@ -29,9 +86,12 @@
             </li>
         </ol>
         <input type="submit" value="Register" />
-    </fieldset>
+    </fieldset>*@
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    @Styles.Render("~/Content/css/registration")
 }
+

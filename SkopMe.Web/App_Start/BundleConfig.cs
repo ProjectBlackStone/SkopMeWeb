@@ -47,6 +47,8 @@ namespace SkopMe.Web
             //removed ~/Content/site.css
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/app.css"));
 
+            bundles.Add(new StyleBundle("~/Content/css/registration").Include("~/Content/themes/unifybootstrap/assets/page_log_reg_v1.css"));
+
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
                         "~/Content/themes/base/jquery.ui.resizable.css",

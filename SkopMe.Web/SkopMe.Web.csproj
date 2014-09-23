@@ -287,6 +287,7 @@
     <Content Include="Content\themes\unifybootstrap\assets\app.css" />
     <Content Include="Content\themes\unifybootstrap\assets\custom.css" />
     <Content Include="Content\themes\unifybootstrap\assets\ie8.css" />
+    <Content Include="Content\themes\unifybootstrap\assets\page_log_reg_v1.css" />
     <Content Include="Content\themes\unifybootstrap\assets\plugins.css" />
     <Content Include="Content\themes\unifybootstrap\assets\plugins\animate.css" />
     <Content Include="Content\themes\unifybootstrap\assets\plugins\back-to-top.js" />
